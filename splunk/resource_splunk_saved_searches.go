@@ -14,9 +14,9 @@ import (
 )
 
 func suppressDefault(defaultValue string) schema.SchemaDiffSuppressFunc {
-    return func(k, old, new string, d *schema.ResourceData) bool {
-        return old == defaultValue && new == ""
-    }
+	return func(k, old, new string, d *schema.ResourceData) bool {
+		return old == defaultValue && new == ""
+	}
 }
 
 func savedSearches() *schema.Resource {
@@ -676,9 +676,9 @@ func savedSearches() *schema.Resource {
 				Description: "Jira Issue Type you would like to create",
 			},
 			"action_jira_service_desk_param_jira_summary": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Jira Issue Summary or title",
+				Type:             schema.TypeString,
+				Optional:         true,
+				Description:      "Jira Issue Summary or title",
 				DiffSuppressFunc: suppressDefault("Splunk Alert: $name$"),
 			},
 			"action_jira_service_desk_param_jira_priority": {
@@ -687,9 +687,9 @@ func savedSearches() *schema.Resource {
 				Description: "Priority of issue created",
 			},
 			"action_jira_service_desk_param_jira_description": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Enter the description of issue created",
+				Type:             schema.TypeString,
+				Optional:         true,
+				Description:      "Enter the description of issue created",
 				DiffSuppressFunc: suppressDefault("The alert condition for '$name$' was triggered."),
 			},
 			"action_jira_service_desk_param_jira_customfields": {
@@ -702,6 +702,60 @@ func savedSearches() *schema.Resource {
 				Optional:     true,
 				Description:  "URL to send the HTTP POST request to. Must be accessible from the Splunk server.",
 				ValidateFunc: validation.StringMatch(regexp.MustCompile(`^https?://[^\s]+$`), "Webhook URL is invalid"),
+			},
+			"action_webhook": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Computed:    true,
+				Description: "The state of the webhook action. Enable or disable webhook action.",
+			},
+			"action_webhook_enable_allowlist": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Computed:    true,
+				Description: "Enable allowlist for webhook action.",
+			},
+			"action_webhook_param_priority": {
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Computed:    true,
+				Description: "Priority for webhook action.",
+			},
+			"action_webhook_param_mitre_attack_id": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Computed:    true,
+				Description: "MITRE ATT&CK technique IDs as JSON array string.",
+			},
+			"action_webhook_param_description": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Computed:    true,
+				Description: "Description for webhook action.",
+			},
+			"action_webhook_param_fields": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Computed:    true,
+				Description: "Fields to include in webhook payload as JSON array string.",
+			},
+			"action_webhook_param_tags": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Computed:    true,
+				Description: "Tags for webhook action as JSON array string.",
+			},
+			"action_webhook_param_author": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Computed:    true,
+				Description: "Author of the webhook action.",
+			},
+			"action_send2uba_param_verbose": {
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Computed:    true,
+				Description: "Verbose logging for UBA action (0 or 1).",
 			},
 			"alert_digest_mode": {
 				Type:     schema.TypeBool,
@@ -1510,6 +1564,33 @@ func savedSearchesRead(d *schema.ResourceData, meta interface{}) error {
 	if err = d.Set("action_webhook_param_url", entry.Content.ActionWebhookParamUrl); err != nil {
 		return err
 	}
+	if err = d.Set("action_webhook", entry.Content.ActionWebhook); err != nil {
+		return err
+	}
+	if err = d.Set("action_webhook_enable_allowlist", entry.Content.ActionWebhookEnableAllowlist); err != nil {
+		return err
+	}
+	if err = d.Set("action_webhook_param_priority", entry.Content.ActionWebhookParamPriority); err != nil {
+		return err
+	}
+	if err = d.Set("action_webhook_param_mitre_attack_id", entry.Content.ActionWebhookParamMitreAttackId); err != nil {
+		return err
+	}
+	if err = d.Set("action_webhook_param_description", entry.Content.ActionWebhookParamDescription); err != nil {
+		return err
+	}
+	if err = d.Set("action_webhook_param_fields", entry.Content.ActionWebhookParamFields); err != nil {
+		return err
+	}
+	if err = d.Set("action_webhook_param_tags", entry.Content.ActionWebhookParamTags); err != nil {
+		return err
+	}
+	if err = d.Set("action_webhook_param_author", entry.Content.ActionWebhookParamAuthor); err != nil {
+		return err
+	}
+	if err = d.Set("action_send2uba_param_verbose", entry.Content.ActionSend2ubaParamVerbose); err != nil {
+		return err
+	}
 	if err = d.Set("alert_digest_mode", entry.Content.AlertDigestMode); err != nil {
 		return err
 	}
@@ -1850,6 +1931,15 @@ func getSavedSearchesConfig(d *schema.ResourceData) (savedSearchesObj *models.Sa
 		ActionJiraServiceDeskParamJiraDescription:    d.Get("action_jira_service_desk_param_jira_description").(string),
 		ActionJiraServiceDeskParamJiraCustomfields:   d.Get("action_jira_service_desk_param_jira_customfields").(string),
 		ActionWebhookParamUrl:                        d.Get("action_webhook_param_url").(string),
+		ActionWebhook:                                d.Get("action_webhook").(bool),
+		ActionWebhookEnableAllowlist:                 d.Get("action_webhook_enable_allowlist").(bool),
+		ActionWebhookParamPriority:                   d.Get("action_webhook_param_priority").(int),
+		ActionWebhookParamMitreAttackId:              d.Get("action_webhook_param_mitre_attack_id").(string),
+		ActionWebhookParamDescription:                d.Get("action_webhook_param_description").(string),
+		ActionWebhookParamFields:                     d.Get("action_webhook_param_fields").(string),
+		ActionWebhookParamTags:                       d.Get("action_webhook_param_tags").(string),
+		ActionWebhookParamAuthor:                     d.Get("action_webhook_param_author").(string),
+		ActionSend2ubaParamVerbose:                   d.Get("action_send2uba_param_verbose").(int),
 		AlertComparator:                              d.Get("alert_comparator").(string),
 		AlertCondition:                               d.Get("alert_condition").(string),
 		AlertDigestMode:                              d.Get("alert_digest_mode").(bool),
