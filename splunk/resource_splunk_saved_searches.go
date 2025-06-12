@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"net/http"
 	"regexp"
+	"sort"
 	"strconv"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
@@ -19,14 +21,42 @@ func suppressDefault(defaultValue string) schema.SchemaDiffSuppressFunc {
 	}
 }
 
+func normalizeActionsString(actions string) string {
+	if actions == "" {
+		return ""
+	}
+
+	// Split by comma, trim whitespace, and sort
+	actionList := strings.Split(actions, ",")
+	for i, action := range actionList {
+		actionList[i] = strings.TrimSpace(action)
+	}
+
+	// Remove empty strings
+	var cleanActions []string
+	for _, action := range actionList {
+		if action != "" {
+			cleanActions = append(cleanActions, action)
+		}
+	}
+
+	sort.Strings(cleanActions)
+	return strings.Join(cleanActions, ",")
+}
+
+func suppressActionsDiff(k, old, new string, d *schema.ResourceData) bool {
+	return normalizeActionsString(old) == normalizeActionsString(new)
+}
+
 func savedSearches() *schema.Resource {
 	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
 			"actions": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Computed:    true,
-				Description: "A comma-separated list of actions to enable. For example: rss,email ",
+				Type:             schema.TypeString,
+				Optional:         true,
+				Computed:         true,
+				Description:      "A comma-separated list of actions to enable. For example: rss,email ",
+				DiffSuppressFunc: suppressActionsDiff,
 			},
 			"action_snow_event_param_account": {
 				Type:        schema.TypeString,
@@ -707,55 +737,55 @@ func savedSearches() *schema.Resource {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Computed:    true,
-				Description: "The state of the webhook action. Enable or disable webhook action.",
+				Description: "The state of the webhook action.",
 			},
 			"action_webhook_enable_allowlist": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Computed:    true,
-				Description: "Enable allowlist for webhook action.",
+				Description: "Enable webhook allowlist for this alert action.",
 			},
 			"action_webhook_param_priority": {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Computed:    true,
-				Description: "Priority for webhook action.",
+				Description: "Priority parameter for webhook action.",
 			},
 			"action_webhook_param_mitre_attack_id": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
-				Description: "MITRE ATT&CK technique IDs as JSON array string.",
+				Description: "MITRE ATT&CK technique IDs associated with this alert.",
 			},
 			"action_webhook_param_description": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
-				Description: "Description for webhook action.",
+				Description: "Description parameter for webhook action.",
 			},
 			"action_webhook_param_fields": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
-				Description: "Fields to include in webhook payload as JSON array string.",
+				Description: "Fields parameter for webhook action.",
 			},
 			"action_webhook_param_tags": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
-				Description: "Tags for webhook action as JSON array string.",
+				Description: "Tags parameter for webhook action.",
 			},
 			"action_webhook_param_author": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
-				Description: "Author of the webhook action.",
+				Description: "Author parameter for webhook action.",
 			},
 			"action_send2uba_param_verbose": {
-				Type:        schema.TypeInt,
+				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
-				Description: "Verbose logging for UBA action (0 or 1).",
+				Description: "Verbose parameter for send2uba action.",
 			},
 			"alert_digest_mode": {
 				Type:     schema.TypeBool,
@@ -1254,7 +1284,7 @@ func savedSearchesRead(d *schema.ResourceData, meta interface{}) error {
 	if err = d.Set("name", d.Id()); err != nil {
 		return err
 	}
-	if err = d.Set("actions", entry.Content.Actions); err != nil {
+	if err = d.Set("actions", normalizeActionsString(entry.Content.Actions)); err != nil {
 		return err
 	}
 	if err = d.Set("action_snow_event_param_account", entry.Content.ActionSnowEventParamAccount); err != nil {
@@ -1564,33 +1594,6 @@ func savedSearchesRead(d *schema.ResourceData, meta interface{}) error {
 	if err = d.Set("action_webhook_param_url", entry.Content.ActionWebhookParamUrl); err != nil {
 		return err
 	}
-	if err = d.Set("action_webhook", entry.Content.ActionWebhook); err != nil {
-		return err
-	}
-	if err = d.Set("action_webhook_enable_allowlist", entry.Content.ActionWebhookEnableAllowlist); err != nil {
-		return err
-	}
-	if err = d.Set("action_webhook_param_priority", entry.Content.ActionWebhookParamPriority); err != nil {
-		return err
-	}
-	if err = d.Set("action_webhook_param_mitre_attack_id", entry.Content.ActionWebhookParamMitreAttackId); err != nil {
-		return err
-	}
-	if err = d.Set("action_webhook_param_description", entry.Content.ActionWebhookParamDescription); err != nil {
-		return err
-	}
-	if err = d.Set("action_webhook_param_fields", entry.Content.ActionWebhookParamFields); err != nil {
-		return err
-	}
-	if err = d.Set("action_webhook_param_tags", entry.Content.ActionWebhookParamTags); err != nil {
-		return err
-	}
-	if err = d.Set("action_webhook_param_author", entry.Content.ActionWebhookParamAuthor); err != nil {
-		return err
-	}
-	if err = d.Set("action_send2uba_param_verbose", entry.Content.ActionSend2ubaParamVerbose); err != nil {
-		return err
-	}
 	if err = d.Set("alert_digest_mode", entry.Content.AlertDigestMode); err != nil {
 		return err
 	}
@@ -1828,7 +1831,7 @@ func savedSearchesDelete(d *schema.ResourceData, meta interface{}) error {
 
 func getSavedSearchesConfig(d *schema.ResourceData) (savedSearchesObj *models.SavedSearchObject) {
 	savedSearchesObj = &models.SavedSearchObject{
-		Actions:                                      d.Get("actions").(string),
+		Actions:                                      normalizeActionsString(d.Get("actions").(string)),
 		ActionEmail:                                  d.Get("action_email").(bool),
 		ActionEmailAuthPassword:                      d.Get("action_email_auth_password").(string),
 		ActionEmailAuthUsername:                      d.Get("action_email_auth_username").(string),
@@ -1939,7 +1942,7 @@ func getSavedSearchesConfig(d *schema.ResourceData) (savedSearchesObj *models.Sa
 		ActionWebhookParamFields:                     d.Get("action_webhook_param_fields").(string),
 		ActionWebhookParamTags:                       d.Get("action_webhook_param_tags").(string),
 		ActionWebhookParamAuthor:                     d.Get("action_webhook_param_author").(string),
-		ActionSend2ubaParamVerbose:                   d.Get("action_send2uba_param_verbose").(int),
+		ActionSend2ubaParamVerbose:                   d.Get("action_send2uba_param_verbose").(string),
 		AlertComparator:                              d.Get("alert_comparator").(string),
 		AlertCondition:                               d.Get("alert_condition").(string),
 		AlertDigestMode:                              d.Get("alert_digest_mode").(bool),
