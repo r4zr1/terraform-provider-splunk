@@ -48,6 +48,59 @@ func suppressActionsDiff(k, old, new string, d *schema.ResourceData) bool {
 	return normalizeActionsString(old) == normalizeActionsString(new)
 }
 
+// calculateWebhookPriority calculates priority based on severity and precision
+// following the business logic from the Python exporter
+func calculateWebhookPriority(severity, precision string) int {
+	switch severity {
+	case "Critical":
+		switch precision {
+		case "High":
+			return 4
+		case "Medium":
+			return 3
+		case "Low":
+			return 2
+		}
+	case "High":
+		switch precision {
+		case "High", "Medium":
+			return 3
+		case "Low":
+			return 2
+		}
+	case "Medium":
+		switch precision {
+		case "High", "Medium":
+			return 2
+		case "Low":
+			return 1
+		}
+	case "Low":
+		return 1
+	}
+	// Default fallback
+	return 1
+}
+
+// getCalculatedPriority returns either the manually set priority or auto-calculated one
+func getCalculatedPriority(d *schema.ResourceData) int {
+	// If priority is explicitly set, use it
+	if priority, ok := d.GetOk("action_webhook_param_priority"); ok {
+		return priority.(int)
+	}
+
+	// Otherwise, calculate from severity and precision
+	severity := d.Get("severity").(string)
+	precision := d.Get("precision").(string)
+
+	if severity != "" && precision != "" {
+		return calculateWebhookPriority(severity, precision)
+	}
+
+	// Default fallback
+	return 1
+}
+
 func savedSearches() *schema.Resource {
 	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
@@ -735,9 +788,8 @@ func savedSearches() *schema.Resource {
 			},
 			"action_webhook": {
 				Type:        schema.TypeBool,
-				Optional:    true,
 				Computed:    true,
-				Description: "The state of the webhook action.",
+				Description: "The state of the webhook action. Automatically determined from actions field.",
 			},
 			"action_webhook_enable_allowlist": {
 				Type:        schema.TypeBool,
@@ -749,7 +801,21 @@ func savedSearches() *schema.Resource {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Computed:    true,
-				Description: "Priority parameter for webhook action.",
+				Description: "Priority parameter for webhook action. If not set, will be auto-calculated from severity and precision.",
+			},
+			"severity": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				Computed:     true,
+				Description:  "Alert severity level (Critical, High, Medium, Low). Used to auto-calculate webhook priority.",
+				ValidateFunc: validation.StringInSlice([]string{"Critical", "High", "Medium", "Low"}, false),
+			},
+			"precision": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				Computed:     true,
+				Description:  "Alert precision level (High, Medium, Low). Used to auto-calculate webhook priority.",
+				ValidateFunc: validation.StringInSlice([]string{"High", "Medium", "Low"}, false),
 			},
 			"action_webhook_param_mitre_attack_id": {
 				Type:        schema.TypeString,
@@ -1594,6 +1660,33 @@ func savedSearchesRead(d *schema.ResourceData, meta interface{}) error {
 	if err = d.Set("action_webhook_param_url", entry.Content.ActionWebhookParamUrl); err != nil {
 		return err
 	}
+	if err = d.Set("action_webhook", entry.Content.ActionWebhook); err != nil {
+		return err
+	}
+	if err = d.Set("action_webhook_enable_allowlist", entry.Content.ActionWebhookEnableAllowlist); err != nil {
+		return err
+	}
+	if err = d.Set("action_webhook_param_priority", entry.Content.ActionWebhookParamPriority); err != nil {
+		return err
+	}
+	if err = d.Set("action_webhook_param_mitre_attack_id", entry.Content.ActionWebhookParamMitreAttackId); err != nil {
+		return err
+	}
+	if err = d.Set("action_webhook_param_description", entry.Content.ActionWebhookParamDescription); err != nil {
+		return err
+	}
+	if err = d.Set("action_webhook_param_fields", entry.Content.ActionWebhookParamFields); err != nil {
+		return err
+	}
+	if err = d.Set("action_webhook_param_tags", entry.Content.ActionWebhookParamTags); err != nil {
+		return err
+	}
+	if err = d.Set("action_webhook_param_author", entry.Content.ActionWebhookParamAuthor); err != nil {
+		return err
+	}
+	if err = d.Set("action_send2uba_param_verbose", entry.Content.ActionSend2ubaParamVerbose); err != nil {
+		return err
+	}
 	if err = d.Set("alert_digest_mode", entry.Content.AlertDigestMode); err != nil {
 		return err
 	}
@@ -1934,9 +2027,9 @@ func getSavedSearchesConfig(d *schema.ResourceData) (savedSearchesObj *models.Sa
 		ActionJiraServiceDeskParamJiraDescription:    d.Get("action_jira_service_desk_param_jira_description").(string),
 		ActionJiraServiceDeskParamJiraCustomfields:   d.Get("action_jira_service_desk_param_jira_customfields").(string),
 		ActionWebhookParamUrl:                        d.Get("action_webhook_param_url").(string),
-		ActionWebhook:                                d.Get("action_webhook").(bool),
+		ActionWebhook:                                strings.Contains(normalizeActionsString(d.Get("actions").(string)), "webhook"),
 		ActionWebhookEnableAllowlist:                 d.Get("action_webhook_enable_allowlist").(bool),
-		ActionWebhookParamPriority:                   d.Get("action_webhook_param_priority").(int),
+		ActionWebhookParamPriority:                   getCalculatedPriority(d),
 		ActionWebhookParamMitreAttackId:              d.Get("action_webhook_param_mitre_attack_id").(string),
 		ActionWebhookParamDescription:                d.Get("action_webhook_param_description").(string),
 		ActionWebhookParamFields:                     d.Get("action_webhook_param_fields").(string),
