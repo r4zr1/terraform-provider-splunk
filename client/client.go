@@ -80,7 +80,8 @@ func getEnv(key, defaultValue string) string {
 func (c *Client) BuildSplunkURL(queryValues url.Values, urlPathParts ...string) url.URL {
 	buildPath := c.path
 	for _, pathPart := range urlPathParts {
-		pathPart = strings.ReplaceAll(pathPart, " ", "+") // url parameters cannot have spaces
+		pathPart = strings.ReplaceAll(pathPart, " ", "+")   // url parameters cannot have spaces
+		pathPart = strings.ReplaceAll(pathPart, "/", "%2F") // escape forward slashes
 		buildPath = path.Join(buildPath, pathPart)
 	}
 	if queryValues == nil {
