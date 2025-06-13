@@ -1,7 +1,7 @@
 resource "splunk_saved_searches" "custom_actions_example" {
   name               = "Custom Actions Alert Example"
   search             = "index=main error | stats count"
-  actions            = "webhook,send2uba"
+  actions            = "webhook"
 
   # Enable webhook action
   action_webhook = true
@@ -13,9 +13,6 @@ resource "splunk_saved_searches" "custom_actions_example" {
   action_webhook_param_fields = "[\"event_utc_time\", \"src_ip\", \"user_name\"]"
   action_webhook_param_tags = "[\"Example\", \"Demo\", \"UEBA\"]"
   action_webhook_param_author = "Terraform Provider"
-
-  # Enable send2uba action
-  action_send2uba_param_verbose = 0
 
   # Alert configuration
   alert_type = "number of events"

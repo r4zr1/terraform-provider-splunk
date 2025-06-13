@@ -465,156 +465,17 @@ func savedSearches() *schema.Resource {
 				Optional:    true,
 				Description: "The pagerduty integration URL override. This integration uses Splunk's native webhooks to send events to PagerDuty.",
 			},
-			"action_populate_lookup": {
-				Type:     schema.TypeBool,
-				Computed: true,
-				Description: "The state of the populate lookup action. Read-only attribute. Value ignored on POST. " +
-					"Use actions to specify a list of enabled actions. Defaults to 0.",
-			},
-			"action_populate_lookup_command": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Computed:    true,
-				Description: "The search command (or pipeline) which is responsible for executing the action.",
-			},
-			"action_populate_lookup_dest": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Computed:    true,
-				Description: "Lookup name of path of the lookup to populate",
-			},
-			"action_populate_lookup_hostname": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Description: "Sets the hostname used in the web link (url) sent in alert actions." +
-					"This value accepts two forms: hostname (for example, splunkserver, splunkserver.example.com)\n\nprotocol://hostname:port (for example, http://splunkserver:8000, https://splunkserver.example.com:443)",
-			},
-			"action_populate_lookup_max_results": {
-				Type:        schema.TypeInt,
-				Optional:    true,
-				Computed:    true,
-				Description: "Sets the maximum number of search results sent using alerts. Defaults to 100.",
-			},
-			"action_populate_lookup_max_time": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Computed: true,
-				Description: "Valid values are: Integer[m|s|h|d]" +
-					"Sets the maximum amount of time the execution of an action takes before the action is aborted. Defaults to 5m.",
-			},
-			"action_populate_lookup_track_alert": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Computed:    true,
-				Description: "Indicates whether the execution of this action signifies a trackable alert.",
-			},
-			"action_populate_lookup_ttl": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Description: "Valid values are Integer[p]" +
-					"Specifies the minimum time-to-live in seconds of the search artifacts if this action is triggered. If p follows Integer, then this specifies the number of scheduled periods. Defaults to 10p.",
-			},
-			"action_rss": {
-				Type:     schema.TypeBool,
-				Computed: true,
-				Description: "The state of the rss action. Read-only attribute. Value ignored on POST." +
-					"Use actions to specify a list of enabled actions. Defaults to 0.",
-			},
-			"action_rss_command": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Description: "The search command (or pipeline) which is responsible for executing the action." +
-					"Generally the command is a template search pipeline which is realized with values from the saved search. " +
-					"To reference saved search field values wrap them in $, for example to reference the savedsearch name use $name$, to reference the search use $search$.",
-			},
-			"action_rss_hostname": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Description: "Sets the hostname used in the web link (url) sent in alert actions." +
-					"This value accepts two forms:hostname (for example, splunkserver, splunkserver.example.com)\n\nprotocol://hostname:port (for example, http://splunkserver:8000, https://splunkserver.example.com:443)",
-			},
-			"action_rss_max_results": {
-				Type:        schema.TypeInt,
-				Optional:    true,
-				Computed:    true,
-				Description: "Sets the maximum number of search results sent using alerts. Defaults to 100.",
-			},
-			"action_rss_max_time": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Computed: true,
-				Description: "Valid values are Integer[m|s|h|d]." +
-					"Sets the maximum amount of time the execution of an action takes before the action is aborted. Defaults to 1m.",
-			},
-			"action_rss_track_alert": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Computed:    true,
-				Description: "Indicates whether the execution of this action signifies a trackable alert.",
-			},
-			"action_rss_ttl": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Description: "Valid values are: Integer[p] Specifies the minimum time-to-live in seconds of the search artifacts if this action is triggered. " +
-					"If p follows Integer, specifies the number of scheduled periods. Defaults to 86400 (24 hours).",
-			},
 			"action_script": {
 				Type:     schema.TypeBool,
 				Computed: true,
 				Description: "The state of the script action. Read-only attribute. Value ignored on POST. " +
 					"Use actions to specify a list of enabled actions. Defaults to 0.",
 			},
-			"action_script_command": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Description: "The search command (or pipeline) which is responsible for executing the action." +
-					"Generally the command is a template search pipeline which is realized with values from the saved search. " +
-					"To reference saved search field values wrap them in $, for example to reference the savedsearch name use $name$, to reference the search use $search$.",
-			},
 			"action_script_filename": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Computed:    true,
 				Description: "File name of the script to call. Required if script action is enabled",
-			},
-			"action_script_hostname": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Description: "Sets the hostname used in the web link (url) sent in alert actions." +
-					"This value accepts two forms:hostname (for example, splunkserver, splunkserver.example.com)\n\nprotocol://hostname:port (for example, http://splunkserver:8000, https://splunkserver.example.com:443)",
-			},
-			"action_script_max_results": {
-				Type:        schema.TypeInt,
-				Optional:    true,
-				Computed:    true,
-				Description: "Sets the maximum number of search results sent using alerts. Defaults to 100.",
-			},
-			"action_script_max_time": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Computed: true,
-				Description: "Valid values are Integer[m|s|h|d]." +
-					"Sets the maximum amount of time the execution of an action takes before the action is aborted. Defaults to 1m.",
-			},
-			"action_script_track_alert": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Computed:    true,
-				Description: "Indicates whether the execution of this action signifies a trackable alert.",
-			},
-			"action_script_ttl": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Description: "Valid values are: Integer[p] Specifies the minimum time-to-live in seconds of the search artifacts if this action is triggered. " +
-					"If p follows Integer, specifies the number of scheduled periods. Defaults to 86400 (24 hours).",
 			},
 			"action_summary_index": {
 				Type:     schema.TypeBool,
@@ -852,12 +713,6 @@ func savedSearches() *schema.Resource {
 				Optional:    true,
 				Computed:    true,
 				Description: "Author parameter for webhook action.",
-			},
-			"action_send2uba_param_verbose": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Computed:    true,
-				Description: "Verbose parameter for send2uba action.",
 			},
 			"alert_digest_mode": {
 				Type:     schema.TypeBool,
@@ -1503,73 +1358,10 @@ func savedSearchesRead(d *schema.ResourceData, meta interface{}) error {
 	if err = d.Set("action_pagerduty_integration_url", entry.Content.ActionPagerdutyIntegrationURL); err != nil {
 		return err
 	}
-	if err = d.Set("action_populate_lookup", entry.Content.ActionPopulateLookup); err != nil {
-		return err
-	}
-	if err = d.Set("action_populate_lookup_command", entry.Content.ActionPopulateLookupCommand); err != nil {
-		return err
-	}
-	if err = d.Set("action_populate_lookup_dest", entry.Content.ActionPopulateLookupDest); err != nil {
-		return err
-	}
-	if err = d.Set("action_populate_lookup_hostname", entry.Content.ActionPopulateLookupHostname); err != nil {
-		return err
-	}
-	if err = d.Set("action_populate_lookup_max_results", entry.Content.ActionPopulateLookupMaxResults); err != nil {
-		return err
-	}
-	if err = d.Set("action_populate_lookup_max_time", entry.Content.ActionPopulateLookupMaxTime); err != nil {
-		return err
-	}
-	if err = d.Set("action_populate_lookup_track_alert", entry.Content.ActionPopulateLookupTrackAlert); err != nil {
-		return err
-	}
-	if err = d.Set("action_populate_lookup_ttl", entry.Content.ActionPopulateLookupTTL); err != nil {
-		return err
-	}
-	if err = d.Set("action_rss", entry.Content.ActionRSS); err != nil {
-		return err
-	}
-	if err = d.Set("action_rss_command", entry.Content.ActionRSSCommand); err != nil {
-		return err
-	}
-	if err = d.Set("action_rss_hostname", entry.Content.ActionRSSHostname); err != nil {
-		return err
-	}
-	if err = d.Set("action_rss_max_results", entry.Content.ActionRSSMaxResults); err != nil {
-		return err
-	}
-	if err = d.Set("action_rss_max_time", entry.Content.ActionRSSMaxTime); err != nil {
-		return err
-	}
-	if err = d.Set("action_rss_track_alert", entry.Content.ActionRSSTrackAlert); err != nil {
-		return err
-	}
-	if err = d.Set("action_rss_ttl", entry.Content.ActionRSSTTL); err != nil {
-		return err
-	}
 	if err = d.Set("action_script", entry.Content.ActionScript); err != nil {
 		return err
 	}
-	if err = d.Set("action_script_command", entry.Content.ActionScriptCommand); err != nil {
-		return err
-	}
 	if err = d.Set("action_script_filename", entry.Content.ActionScriptFilename); err != nil {
-		return err
-	}
-	if err = d.Set("action_script_hostname", entry.Content.ActionScriptHostname); err != nil {
-		return err
-	}
-	if err = d.Set("action_script_max_results", entry.Content.ActionScriptMaxResults); err != nil {
-		return err
-	}
-	if err = d.Set("action_script_max_time", entry.Content.ActionScriptMaxTime); err != nil {
-		return err
-	}
-	if err = d.Set("action_script_track_alert", entry.Content.ActionScriptTrackAlert); err != nil {
-		return err
-	}
-	if err = d.Set("action_script_ttl", entry.Content.ActionScriptTTL); err != nil {
 		return err
 	}
 	if err = d.Set("action_summary_index", entry.Content.ActionSummaryIndex); err != nil {
@@ -1691,9 +1483,6 @@ func savedSearchesRead(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 	if err = d.Set("action_webhook_param_author", entry.Content.ActionWebhookParamAuthor); err != nil {
-		return err
-	}
-	if err = d.Set("action_send2uba_param_verbose", entry.Content.ActionSend2ubaParamVerbose); err != nil {
 		return err
 	}
 	if err = d.Set("alert_digest_mode", entry.Content.AlertDigestMode); err != nil {
@@ -1977,26 +1766,7 @@ func getSavedSearchesConfig(d *schema.ResourceData) (savedSearchesObj *models.Sa
 		ActionPagerdutyParamCustDetails:              d.Get("action_pagerduty_custom_details").(string),
 		ActionPagerdutyParamIntKey:                   d.Get("action_pagerduty_integration_key").(string),
 		ActionPagerdutyParamIntKeyOverride:           d.Get("action_pagerduty_integration_key_override").(string),
-		ActionPopulateLookupCommand:                  d.Get("action_populate_lookup_command").(string),
-		ActionPopulateLookupDest:                     d.Get("action_populate_lookup_dest").(string),
-		ActionPopulateLookupHostname:                 d.Get("action_populate_lookup_hostname").(string),
-		ActionPopulateLookupMaxResults:               d.Get("action_populate_lookup_max_results").(int),
-		ActionPopulateLookupMaxTime:                  d.Get("action_populate_lookup_max_time").(int),
-		ActionPopulateLookupTrackAlert:               d.Get("action_populate_lookup_track_alert").(bool),
-		ActionPopulateLookupTTL:                      d.Get("action_populate_lookup_ttl").(string),
-		ActionRSSCommand:                             d.Get("action_rss_command").(string),
-		ActionRSSHostname:                            d.Get("action_rss_hostname").(string),
-		ActionRSSMaxResults:                          d.Get("action_rss_max_results").(int),
-		ActionRSSMaxTime:                             d.Get("action_rss_max_time").(int),
-		ActionRSSTrackAlert:                          d.Get("action_rss_track_alert").(bool),
-		ActionRSSTTL:                                 d.Get("action_rss_ttl").(string),
-		ActionScriptCommand:                          d.Get("action_script_command").(string),
 		ActionScriptFilename:                         d.Get("action_script_filename").(string),
-		ActionScriptHostname:                         d.Get("action_script_hostname").(string),
-		ActionScriptMaxResults:                       d.Get("action_script_max_results").(int),
-		ActionScriptMaxTime:                          d.Get("action_script_max_time").(int),
-		ActionScriptTrackAlert:                       d.Get("action_script_track_alert").(bool),
-		ActionScriptTTL:                              d.Get("action_script_ttl").(string),
 		ActionSnowEventParamAccount:                  d.Get("action_snow_event_param_account").(string),
 		ActionSnowEventParamNode:                     d.Get("action_snow_event_param_node").(string),
 		ActionSnowEventParamType:                     d.Get("action_snow_event_param_type").(string),
@@ -2045,7 +1815,6 @@ func getSavedSearchesConfig(d *schema.ResourceData) (savedSearchesObj *models.Sa
 		ActionWebhookParamFields:                     d.Get("action_webhook_param_fields").(string),
 		ActionWebhookParamTags:                       d.Get("action_webhook_param_tags").(string),
 		ActionWebhookParamAuthor:                     d.Get("action_webhook_param_author").(string),
-		ActionSend2ubaParamVerbose:                   d.Get("action_send2uba_param_verbose").(string),
 		AlertComparator:                              d.Get("alert_comparator").(string),
 		AlertCondition:                               d.Get("alert_condition").(string),
 		AlertDigestMode:                              d.Get("alert_digest_mode").(bool),

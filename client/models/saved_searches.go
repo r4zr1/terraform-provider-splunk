@@ -57,29 +57,8 @@ type SavedSearchObject struct {
 	ActionPagerdutyParamCustDetails              string  `json:"action.pagerduty.param.custom_details,omitempty" url:"action.pagerduty.param.custom_details,omitempty"`
 	ActionPagerdutyParamIntKey                   string  `json:"action.pagerduty.param.integration_key,omitempty" url:"action.pagerduty.param.integration_key,omitempty"`
 	ActionPagerdutyParamIntKeyOverride           string  `json:"action.pagerduty.param.integration_key_override,omitempty" url:"action.pagerduty.param.integration_key_override,omitempty"`
-	ActionPopulateLookup                         bool    `json:"action.populate_lookup" url:"action.populate_lookup"`
-	ActionPopulateLookupCommand                  string  `json:"action.populate_lookup.command,omitempty" url:"action.populate_lookup.command,omitempty"`
-	ActionPopulateLookupDest                     string  `json:"action.populate_lookup.dest,omitempty" url:"action.populate_lookup.dest,omitempty"`
-	ActionPopulateLookupHostname                 string  `json:"action.populate_lookup.hostname,omitempty" url:"action.populate_lookup.hostname,omitempty"`
-	ActionPopulateLookupMaxResults               int     `json:"action.populate_lookup.maxresults,omitempty" url:"action.populate_lookup.maxresults,omitempty"`
-	ActionPopulateLookupMaxTime                  int     `json:"action.populate_lookup.maxtime,omitempty" url:"action.populate_lookup.maxtime,omitempty,omitempty"`
-	ActionPopulateLookupTrackAlert               bool    `json:"action.populate_lookup.track_alert" url:"action.populate_lookup.track_alert"`
-	ActionPopulateLookupTTL                      string  `json:"action.populate_lookup.ttl,omitempty" url:"action.populate_lookup.ttl,omitempty"`
-	ActionRSS                                    bool    `json:"-" url:"action.rss"`
-	ActionRSSCommand                             string  `json:"action.rss.command,omitempty" url:"action.rss.command,omitempty"`
-	ActionRSSHostname                            string  `json:"action.rss.hostname,omitempty" url:"action.rss.hostname,omitempty"`
-	ActionRSSMaxResults                          int     `json:"action.rss.maxresults,omitempty" url:"action.rss.maxresults,omitempty"`
-	ActionRSSMaxTime                             int     `json:"action.rss.maxtime,omitempty" url:"action.rss.maxtime,omitempty"`
-	ActionRSSTrackAlert                          bool    `json:"action.rss.track_alert" url:"action.rss.track_alert"`
-	ActionRSSTTL                                 string  `json:"action.rss.ttl,omitempty" url:"action.rss.ttl,omitempty"`
 	ActionScript                                 bool    `json:"-" url:"action.script"`
-	ActionScriptCommand                          string  `json:"action.script.command,omitempty" url:"action.script.command,omitempty"`
 	ActionScriptFilename                         string  `json:"action.script.filename,omitempty" url:"action.script.filename,omitempty"`
-	ActionScriptHostname                         string  `json:"action.script.hostname,omitempty" url:"action.script.hostname,omitempty"`
-	ActionScriptMaxResults                       int     `json:"action.script.maxresults,omitempty" url:"action.script.maxresults,omitempty"`
-	ActionScriptMaxTime                          int     `json:"action.script.maxtime,omitempty" url:"action.script.maxtime,omitempty"`
-	ActionScriptTrackAlert                       bool    `json:"action.script.track_alert" url:"action.script.track_alert"`
-	ActionScriptTTL                              string  `json:"action.script.ttl,omitempty" url:"action.script.ttl,omitempty"`
 	ActionSnowEventParamAccount                  string  `json:"action.snow_event.param.account,omitempty" url:"action.snow_event.param.account,omitempty"`
 	ActionSnowEventParamNode                     string  `json:"action.snow_event.param.node,omitempty" url:"action.snow_event.param.node,omitempty"`
 	ActionSnowEventParamType                     string  `json:"action.snow_event.param.type,omitempty" url:"action.snow_event.param.type,omitempty"`
@@ -128,7 +107,6 @@ type SavedSearchObject struct {
 	ActionWebhookParamFields                     string  `json:"action.webhook.param.fields,omitempty" url:"action.webhook.param.fields,omitempty"`
 	ActionWebhookParamTags                       string  `json:"action.webhook.param.tags,omitempty" url:"action.webhook.param.tags,omitempty"`
 	ActionWebhookParamAuthor                     string  `json:"action.webhook.param.author,omitempty" url:"action.webhook.param.author,omitempty"`
-	ActionSend2ubaParamVerbose                   string  `json:"action.send2uba.param.verbose,omitempty" url:"action.send2uba.param.verbose,omitempty"`
 	AlertDigestMode                              bool    `json:"alert.digest_mode" url:"alert.digest_mode"`
 	AlertExpires                                 string  `json:"alert.expires,omitempty" url:"alert.expires,omitempty"`
 	AlertSeverity                                int     `json:"alert.severity,omitempty" url:"alert.severity,omitempty"`
