@@ -116,7 +116,8 @@ resource "splunk_saved_searches" "new-search-01" {
   actions                   = "email"
   action_email_format       = "table"
   action_email_max_time     = "5m"
-  action_email_send_results = true
+  action_email_send_results = "1"
+  action_email_allow_empty_attach = "0"
   action_email_subject      = "Splunk Alert: $name$"
   action_email_to           = "user01@splunk.com"
   action_email_track_alert  = true

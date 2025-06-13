@@ -371,17 +371,23 @@ func savedSearches() *schema.Resource {
 				Description: "Specify whether to send results as a CSV file. Default: 0 (false).",
 			},
 			"action_email_send_pdf": {
-				Type:        schema.TypeBool,
+				Type:        schema.TypeInt,
 				Optional:    true,
 				Computed:    true,
 				Description: "Indicates whether to create and send the results as a PDF. Defaults to false.",
 			},
 			"action_email_send_results": {
-				Type:     schema.TypeBool,
+				Type:     schema.TypeInt,
 				Optional: true,
 				Computed: true,
 				Description: "Indicates whether to attach the search results in the email." +
 					"Results can be either attached or inline. See action.email.inline.",
+			},
+			"action_email_allow_empty_attach": {
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Computed:    true,
+				Description: "Indicates whether to allow empty attachments in the email.",
 			},
 			"action_email_subject": {
 				Type:        schema.TypeString,
@@ -1470,6 +1476,9 @@ func savedSearchesRead(d *schema.ResourceData, meta interface{}) error {
 	if err = d.Set("action_email_send_results", entry.Content.ActionEmailSendResults); err != nil {
 		return err
 	}
+	if err = d.Set("action_email_allow_empty_attach", entry.Content.ActionEmailAllowEmptyAttach); err != nil {
+		return err
+	}
 	if err = d.Set("action_email_subject", entry.Content.ActionEmailSubject); err != nil {
 		return err
 	}
@@ -1953,8 +1962,9 @@ func getSavedSearchesConfig(d *schema.ResourceData) (savedSearchesObj *models.Sa
 		ActionEmailReportServerEnabled:               d.Get("action_email_report_server_enabled").(bool),
 		ActionEmailReportServerURL:                   d.Get("action_email_report_server_url").(string),
 		ActionEmailSendCSV:                           d.Get("action_email_send_csv").(int),
-		ActionEmailSendPDF:                           d.Get("action_email_send_pdf").(bool),
-		ActionEmailSendResults:                       d.Get("action_email_send_results").(bool),
+		ActionEmailSendPDF:                           d.Get("action_email_send_pdf").(int),
+		ActionEmailSendResults:                       d.Get("action_email_send_results").(int),
+		ActionEmailAllowEmptyAttach:                  d.Get("action_email_allow_empty_attach").(int),
 		ActionEmailSubject:                           d.Get("action_email_subject").(string),
 		ActionEmailTo:                                d.Get("action_email_to").(string),
 		ActionEmailTrackAlert:                        d.Get("action_email_track_alert").(bool),

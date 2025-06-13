@@ -62,6 +62,7 @@ This resource block supports the following arguments:
 * `action_email_send_csv` - (Optional) Specify whether to send results as a CSV file. Defaults to 0.
 * `action_email_send_pdf` - (Optional) Indicates whether to create and send the results as a PDF. Defaults to false.
 * `action_email_send_results` - (Optional) Indicates whether to attach the search results in the email.Results can be either attached or inline. See action.email.inline.
+* `action_email_allow_empty_attach` - (Optional) Indicates whether to allow empty attachments in the email.
 * `action_email_subject` - (Optional) Specifies an alternate email subject.Defaults to SplunkAlert-<savedsearchname>.
 * `action_email_to` - (Optional) A comma or semicolon separated list of recipient email addresses. Required if this search is scheduled and the email alert action is enabled.
 * `action_email_track_alert` - (Optional) Indicates whether the execution of this action signifies a trackable alert.
