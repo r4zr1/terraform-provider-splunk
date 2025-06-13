@@ -44,7 +44,7 @@ type SavedSearchObject struct {
 	ActionEmailSendCSV                           int     `json:"action.email.sendcsv,string,omitempty" url:"action.email.sendcsv,omitempty"`
 	ActionEmailSendPDF                           int     `json:"action.email.sendpdf" url:"action.email.sendpdf"`
 	ActionEmailSendResults                       int     `json:"action.email.sendresults" url:"action.email.sendresults"`
-	ActionEmailAllowEmptyAttach                  int     `json:"action.email.allow_empty_attach" url:"action.email.allow_empty_attach"`
+	ActionEmailAllowEmptyAttachment              int     `json:"action.email.allow_empty_attachment" url:"action.email.allow_empty_attachment"`
 	ActionEmailSubject                           string  `json:"action.email.subject,omitempty" url:"action.email.subject,omitempty"`
 	ActionEmailTo                                string  `json:"action.email.to,omitempty" url:"action.email.to,omitempty"`
 	ActionEmailTrackAlert                        bool    `json:"action.email.track_alert" url:"action.email.track_alert"`
@@ -121,7 +121,7 @@ type SavedSearchObject struct {
 	ActionJiraServiceDeskParamJiraCustomfields   string  `json:"action.jira_service_desk.param.jira_customfields,omitempty" url:"action.jira_service_desk.param.jira_customfields"`
 	ActionWebhookParamUrl                        string  `json:"action.webhook.param.url,omitempty" url:"action.webhook.param.url"`
 	ActionWebhook                                bool    `json:"action.webhook" url:"action.webhook"`
-	ActionWebhookEnableAllowlist                 bool    `json:"action.webhook.enable_allowlist" url:"action.webhook.enable_allowlist"`
+	ActionWebhookEnableAllowlist                 int     `json:"action.webhook.enable_allowlist" url:"action.webhook.enable_allowlist"`
 	ActionWebhookParamPriority                   int     `json:"action.webhook.param.priority,omitempty" url:"action.webhook.param.priority,omitempty"`
 	ActionWebhookParamMitreAttackId              string  `json:"action.webhook.param.mitre_attack_id,omitempty" url:"action.webhook.param.mitre_attack_id,omitempty"`
 	ActionWebhookParamDescription                string  `json:"action.webhook.param.description,omitempty" url:"action.webhook.param.description,omitempty"`

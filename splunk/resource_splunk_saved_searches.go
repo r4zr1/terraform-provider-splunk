@@ -383,7 +383,7 @@ func savedSearches() *schema.Resource {
 				Description: "Indicates whether to attach the search results in the email." +
 					"Results can be either attached or inline. See action.email.inline.",
 			},
-			"action_email_allow_empty_attach": {
+			"action_email_allow_empty_attachment": {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Computed:    true,
@@ -798,7 +798,7 @@ func savedSearches() *schema.Resource {
 				Description: "The state of the webhook action. Automatically determined from actions field.",
 			},
 			"action_webhook_enable_allowlist": {
-				Type:        schema.TypeBool,
+				Type:        schema.TypeInt,
 				Optional:    true,
 				Computed:    true,
 				Description: "Enable webhook allowlist for this alert action.",
@@ -1476,7 +1476,7 @@ func savedSearchesRead(d *schema.ResourceData, meta interface{}) error {
 	if err = d.Set("action_email_send_results", entry.Content.ActionEmailSendResults); err != nil {
 		return err
 	}
-	if err = d.Set("action_email_allow_empty_attach", entry.Content.ActionEmailAllowEmptyAttach); err != nil {
+	if err = d.Set("action_email_allow_empty_attachment", entry.Content.ActionEmailAllowEmptyAttachment); err != nil {
 		return err
 	}
 	if err = d.Set("action_email_subject", entry.Content.ActionEmailSubject); err != nil {
@@ -1964,7 +1964,7 @@ func getSavedSearchesConfig(d *schema.ResourceData) (savedSearchesObj *models.Sa
 		ActionEmailSendCSV:                           d.Get("action_email_send_csv").(int),
 		ActionEmailSendPDF:                           d.Get("action_email_send_pdf").(int),
 		ActionEmailSendResults:                       d.Get("action_email_send_results").(int),
-		ActionEmailAllowEmptyAttach:                  d.Get("action_email_allow_empty_attach").(int),
+		ActionEmailAllowEmptyAttachment:              d.Get("action_email_allow_empty_attachment").(int),
 		ActionEmailSubject:                           d.Get("action_email_subject").(string),
 		ActionEmailTo:                                d.Get("action_email_to").(string),
 		ActionEmailTrackAlert:                        d.Get("action_email_track_alert").(bool),
@@ -2038,7 +2038,7 @@ func getSavedSearchesConfig(d *schema.ResourceData) (savedSearchesObj *models.Sa
 		ActionJiraServiceDeskParamJiraCustomfields:   d.Get("action_jira_service_desk_param_jira_customfields").(string),
 		ActionWebhookParamUrl:                        d.Get("action_webhook_param_url").(string),
 		ActionWebhook:                                strings.Contains(normalizeActionsString(d.Get("actions").(string)), "webhook"),
-		ActionWebhookEnableAllowlist:                 d.Get("action_webhook_enable_allowlist").(bool),
+		ActionWebhookEnableAllowlist:                 d.Get("action_webhook_enable_allowlist").(int),
 		ActionWebhookParamPriority:                   getCalculatedPriority(d),
 		ActionWebhookParamMitreAttackId:              d.Get("action_webhook_param_mitre_attack_id").(string),
 		ActionWebhookParamDescription:                d.Get("action_webhook_param_description").(string),

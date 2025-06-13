@@ -23,7 +23,7 @@ resource "splunk_saved_searches" "test" {
     action_email_max_results = 10
     action_email_send_csv = 1
     action_email_send_results = 0
-    action_email_allow_empty_attach = 1
+    action_email_allow_empty_attachment = 1
     action_email_subject = "Splunk Alert: $name$"
     action_email_to = "splunk@splunk.com"
     action_email_track_alert = true
@@ -308,7 +308,7 @@ func TestAccSplunkSavedSearches(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "action_email_max_results", "10"),
 					resource.TestCheckResourceAttr(resourceName, "action_email_send_csv", "1"),
 					resource.TestCheckResourceAttr(resourceName, "action_email_send_results", "false"),
-					resource.TestCheckResourceAttr(resourceName, "action_email_allow_empty_attach", "true"),
+					resource.TestCheckResourceAttr(resourceName, "action_email_allow_empty_attachment", "1"),
 					resource.TestCheckResourceAttr(resourceName, "action_email_subject", "Splunk Alert: $name$"),
 					resource.TestCheckResourceAttr(resourceName, "action_email_to", "splunk@splunk.com"),
 					resource.TestCheckResourceAttr(resourceName, "action_email_track_alert", "true"),
