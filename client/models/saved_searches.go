@@ -42,8 +42,8 @@ type SavedSearchObject struct {
 	ActionEmailReportServerEnabled               bool    `json:"action.email.reportServerEnabled" url:"action.email.reportServerEnabled"`
 	ActionEmailReportServerURL                   string  `json:"action.email.reportServerURL,omitempty" url:"action.email.reportServerURL,omitempty"`
 	ActionEmailSendCSV                           int     `json:"action.email.sendcsv,string,omitempty" url:"action.email.sendcsv,omitempty"`
-	ActionEmailSendPDF                           int     `json:"action.email.sendpdf" url:"action.email.sendpdf"`
-	ActionEmailSendResults                       int     `json:"action.email.sendresults" url:"action.email.sendresults"`
+	ActionEmailSendPDF                           bool    `json:"action.email.sendpdf" url:"action.email.sendpdf"`
+	ActionEmailSendResults                       bool    `json:"action.email.sendresults" url:"action.email.sendresults"`
 	ActionEmailAllowEmptyAttachment              int     `json:"action.email.allow_empty_attachment" url:"action.email.allow_empty_attachment"`
 	ActionEmailSubject                           string  `json:"action.email.subject,omitempty" url:"action.email.subject,omitempty"`
 	ActionEmailTo                                string  `json:"action.email.to,omitempty" url:"action.email.to,omitempty"`

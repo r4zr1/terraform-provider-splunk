@@ -371,13 +371,13 @@ func savedSearches() *schema.Resource {
 				Description: "Specify whether to send results as a CSV file. Default: 0 (false).",
 			},
 			"action_email_send_pdf": {
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBool,
 				Optional:    true,
 				Computed:    true,
 				Description: "Indicates whether to create and send the results as a PDF. Defaults to false.",
 			},
 			"action_email_send_results": {
-				Type:     schema.TypeInt,
+				Type:     schema.TypeBool,
 				Optional: true,
 				Computed: true,
 				Description: "Indicates whether to attach the search results in the email." +
@@ -1962,8 +1962,8 @@ func getSavedSearchesConfig(d *schema.ResourceData) (savedSearchesObj *models.Sa
 		ActionEmailReportServerEnabled:               d.Get("action_email_report_server_enabled").(bool),
 		ActionEmailReportServerURL:                   d.Get("action_email_report_server_url").(string),
 		ActionEmailSendCSV:                           d.Get("action_email_send_csv").(int),
-		ActionEmailSendPDF:                           d.Get("action_email_send_pdf").(int),
-		ActionEmailSendResults:                       d.Get("action_email_send_results").(int),
+		ActionEmailSendPDF:                           d.Get("action_email_send_pdf").(bool),
+		ActionEmailSendResults:                       d.Get("action_email_send_results").(bool),
 		ActionEmailAllowEmptyAttachment:              d.Get("action_email_allow_empty_attachment").(int),
 		ActionEmailSubject:                           d.Get("action_email_subject").(string),
 		ActionEmailTo:                                d.Get("action_email_to").(string),
