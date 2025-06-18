@@ -68,15 +68,6 @@ type SavedSearchObject struct {
 	ActionSnowEventParamCiIdentifier             string  `json:"action.snow_event.param.ci_identifier,omitempty" url:"action.snow_event.param.ci_identifier,omitempty"`
 	ActionSnowEventParamCustomFields             string  `json:"action.snow_event.param.custom_fields,omitempty" url:"action.snow_event.param.custom_fields,omitempty"`
 	ActionSnowEventParamAdditionalInfo           string  `json:"action.snow_event.param.additional_info,omitempty" url:"action.snow_event.param.additional_info,omitempty"`
-	ActionSummaryIndex                           bool    `json:"action.summary_index,omitempty" url:"action.summary_index"`
-	ActionSummaryIndexName                       string  `json:"action.summary_index._name,omitempty" url:"action.summary_index._name,omitempty"`
-	ActionSummaryIndexCommand                    string  `json:"action.summary_index.command,omitempty" url:"action.summary_index.command,omitempty"`
-	ActionSummaryIndexHostname                   string  `json:"action.summary_index.hostname,omitempty" url:"action.summary_index.hostname,omitempty"`
-	ActionSummaryIndexInline                     bool    `json:"action.summary_index.inline" url:"action.summary_index.inline"`
-	ActionSummaryIndexMaxResults                 int     `json:"action.summary_index.maxresults,omitempty" url:"action.summary_index.maxresults,omitempty"`
-	ActionSummaryIndexMaxTime                    int     `json:"action.summary_index.maxtime,omitempty" url:"action.summary_index.maxtime,omitempty"`
-	ActionSummaryIndexTrackAlert                 bool    `json:"action.summary_index.track_alert" url:"action.summary_index.track_alert"`
-	ActionSummaryIndexTTL                        string  `json:"action.summary_index.ttl,omitempty" url:"action.summary_index.ttl,omitempty"`
 	ActionCreateXsoarIncident                    string  `json:"action.create_xsoar_incident,omitempty" url:"action.create_xsoar_incident"`
 	ActionCreateXsoarIncidentParamSendAllServers string  `json:"action.create_xsoar_incident.param.send_all_servers,omitempty" url:"action.create_xsoar_incident.param.send_all_servers"`
 	ActionCreateXsoarIncidentParamServerUrl      string  `json:"action.create_xsoar_incident.param.server_url,omitempty" url:"action.create_xsoar_incident.param.server_url"`

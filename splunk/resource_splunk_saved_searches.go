@@ -477,67 +477,6 @@ func savedSearches() *schema.Resource {
 				Computed:    true,
 				Description: "File name of the script to call. Required if script action is enabled",
 			},
-			"action_summary_index": {
-				Type:     schema.TypeBool,
-				Computed: true,
-				Description: "The state of the summary index action. Read-only attribute. " +
-					"Value ignored on POST. Use actions to specify a list of enabled actions. Defaults to 0.",
-			},
-			"action_summary_index_name": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Description: "Specifies the name of the summary index where the results of the scheduled search are saved." +
-					"Defaults to summary.",
-			},
-			"action_summary_index_command": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Description: "The search command (or pipeline) which is responsible for executing the action." +
-					"Generally the command is a template search pipeline which is realized with values from the saved search. " +
-					"To reference saved search field values wrap them in $, for example to reference the savedsearch name use $name$, to reference the search use $search$.",
-			},
-			"action_summary_index_hostname": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Description: "Sets the hostname used in the web link (url) sent in summary-index alert actions." +
-					"This value accepts two forms:hostname (for example, splunkserver, splunkserver.example.com)protocol://hostname:port (for example, http://splunkserver:8000, https://splunkserver.example.com:443)",
-			},
-			"action_summary_index_inline": {
-				Type:     schema.TypeBool,
-				Optional: true,
-				Computed: true,
-				Description: "Determines whether to execute the summary indexing action as part of the scheduled search." +
-					"NOTE: This option is considered only if the summary index action is enabled and is always executed (in other words, if counttype = always).Defaults to true ",
-			},
-			"action_summary_index_max_results": {
-				Type:        schema.TypeInt,
-				Optional:    true,
-				Computed:    true,
-				Description: "Sets the maximum number of search results sent using alerts. Defaults to 100.",
-			},
-			"action_summary_index_max_time": {
-				Type:     schema.TypeInt,
-				Optional: true,
-				Computed: true,
-				Description: "Valid values are Integer[m|s|h|d]." +
-					"Sets the maximum amount of time the execution of an action takes before the action is aborted. Defaults to 1m.",
-			},
-			"action_summary_index_track_alert": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Computed:    true,
-				Description: "Indicates whether the execution of this action signifies a trackable alert.",
-			},
-			"action_summary_index_ttl": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				Description: "Valid values are: Integer[p] Specifies the minimum time-to-live in seconds of the search artifacts if this action is triggered. " +
-					"If p follows Integer, specifies the number of scheduled periods. Defaults to 86400 (24 hours).",
-			},
 			"action_create_xsoar_incident": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -1364,33 +1303,6 @@ func savedSearchesRead(d *schema.ResourceData, meta interface{}) error {
 	if err = d.Set("action_script_filename", entry.Content.ActionScriptFilename); err != nil {
 		return err
 	}
-	if err = d.Set("action_summary_index", entry.Content.ActionSummaryIndex); err != nil {
-		return err
-	}
-	if err = d.Set("action_summary_index_name", entry.Content.ActionSummaryIndexName); err != nil {
-		return err
-	}
-	if err = d.Set("action_summary_index_command", entry.Content.ActionSummaryIndexCommand); err != nil {
-		return err
-	}
-	if err = d.Set("action_summary_index_hostname", entry.Content.ActionSummaryIndexHostname); err != nil {
-		return err
-	}
-	if err = d.Set("action_summary_index_inline", entry.Content.ActionSummaryIndexInline); err != nil {
-		return err
-	}
-	if err = d.Set("action_summary_index_max_results", entry.Content.ActionSummaryIndexMaxResults); err != nil {
-		return err
-	}
-	if err = d.Set("action_summary_index_max_time", entry.Content.ActionSummaryIndexMaxTime); err != nil {
-		return err
-	}
-	if err = d.Set("action_summary_index_track_alert", entry.Content.ActionSummaryIndexTrackAlert); err != nil {
-		return err
-	}
-	if err = d.Set("action_summary_index_ttl", entry.Content.ActionSummaryIndexTTL); err != nil {
-		return err
-	}
 	if err = d.Set("action_create_xsoar_incident", entry.Content.ActionCreateXsoarIncident); err != nil {
 		return err
 	}
@@ -1776,15 +1688,6 @@ func getSavedSearchesConfig(d *schema.ResourceData) (savedSearchesObj *models.Sa
 		ActionSnowEventParamCiIdentifier:             d.Get("action_snow_event_param_ci_identifier").(string),
 		ActionSnowEventParamCustomFields:             d.Get("action_snow_event_param_custom_fields").(string),
 		ActionSnowEventParamAdditionalInfo:           d.Get("action_snow_event_param_additional_info").(string),
-		ActionSummaryIndex:                           d.Get("action_summary_index").(bool),
-		ActionSummaryIndexCommand:                    d.Get("action_summary_index_command").(string),
-		ActionSummaryIndexHostname:                   d.Get("action_summary_index_hostname").(string),
-		ActionSummaryIndexInline:                     d.Get("action_summary_index_inline").(bool),
-		ActionSummaryIndexMaxResults:                 d.Get("action_summary_index_max_results").(int),
-		ActionSummaryIndexMaxTime:                    d.Get("action_summary_index_max_time").(int),
-		ActionSummaryIndexName:                       d.Get("action_summary_index_name").(string),
-		ActionSummaryIndexTrackAlert:                 d.Get("action_summary_index_track_alert").(bool),
-		ActionSummaryIndexTTL:                        d.Get("action_summary_index_ttl").(string),
 		ActionCreateXsoarIncident:                    d.Get("action_create_xsoar_incident").(string),
 		ActionCreateXsoarIncidentParamSendAllServers: d.Get("action_create_xsoar_incident_param_send_all_servers").(string),
 		ActionCreateXsoarIncidentParamServerUrl:      d.Get("action_create_xsoar_incident_param_server_url").(string),
